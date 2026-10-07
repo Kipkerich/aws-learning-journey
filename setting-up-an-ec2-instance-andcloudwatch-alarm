@@ -1,0 +1,25 @@
+# AWS EC2 Instance and CloudWatch Alarm Lab
+
+This repository documents the step-by-step procedure to set up an Amazon EC2 instance and configure a CloudWatch alarm for CPU utilization monitoring as part of the Nautilus DevOps requirements.
+
+---
+
+## Lab Overview
+- **EC2 Instance Name:** `devops-ec2`
+- **AMI:** Ubuntu
+- **CloudWatch Alarm Name:** `devops-alarm`
+- **Metric:** CPU Utilization (`Average`)
+- **Threshold:** `>= 90%` for `1` consecutive `5-minute` period
+- **Alarm Action:** Notification sent to `devops-sns-topic`
+
+---
+
+## Step 1: Launch the EC2 Instance
+
+1. Open the **Amazon EC2 Console**.
+2. Click **Launch instance** and configure the basic details:
+   - **Name:** `devops-ec2`
+   - **Application and OS Images (AMI):** Select **Ubuntu** (e.g., Ubuntu Server 22.04 LTS or latest).
+   - **Instance Type:** Select an appropriate instance type (e.g., `t2.micro`).
+3. Configure **Network Settings** and select or create a **Key Pair** as required.
+4. Click **Launch Instance** and wait for the instance state to change to **Running**.
