@@ -1,0 +1,13 @@
+##Application Load Balancer - This is a networking component that intelligently routes HTTP traffic across mutiple backend targets
+##Auto scaling group - An AWS services that automatically manages the number of EC2 instances running in an application
+
+##How ASG and ALB Work Together
+While an Application Load Balancer (ALB) handles traffic distribution, an Auto Scaling Group handles compute capacity. In a production architecture, they are tightly integrated:
+
+Traffic Inflow: Client requests hit the ALB.
+
+Target Group Routing: The ALB forwards requests to the instances managed by the ASG.
+
+Automatic Registration: When the ASG launches a new EC2 instance due to a traffic spike, that instance automatically registers itself with the ALB's Target Group. Once it passes health checks, it begins receiving live traffic.
+
+Deregistration: When traffic drops and the ASG terminates an instance, it gracefully deregisters the instance from the ALB so no active requests are dropped.
