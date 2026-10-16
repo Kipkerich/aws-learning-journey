@@ -1,0 +1,73 @@
+# Step-by-Step Guide: Setting Up an Nginx Web Server on AWS EC2
+
+This guide walks you through launching an Amazon EC2 instance, configuring its network settings, and setting up an Nginx web server using automation.
+
+---
+
+### Step 1: Launch the EC2 Instance
+1. Open the **AWS Management Console** and navigate to the **EC2 Dashboard**.
+2. Click the **Launch instance** button.
+3. **Name your instance:** Enter a recognizable name (e.g., `Nginx-Web-Server`).
+4. **Choose an OS (AMI):** Select **Ubuntu** (Latest LTS release).
+5. **Instance type:** Select **t2.micro** or **t3.micro** (Free Tier eligible).
+6. **Key pair:** Select an existing key pair or create a new one to securely connect via SSH later.
+
+---
+
+### Step 2: Configure the Security Group
+To allow web traffic to reach your server, you must configure firewall rules in your Security Group.
+
+1. In the **Network settings** section, select **Create security group**.
+2. Check the box to **Allow SSH traffic** (Port 22). *Tip: Set the source to "My IP" for better security.*
+3. Check the box to **Allow HTTP traffic from the internet** (Port 80).
+4. Check the box to **Allow HTTPS traffic from the internet** (Port 443) for secure encrypted traffic.
+
+---
+
+### Step 3: Automate Installation with User Data
+You can use EC2 User Data to automatically install and start Nginx the moment the server boots up.
+
+1. Scroll down to the bottom of the launch page and expand the **Advanced details** section.
+2. Scroll to the very bottom to find the **User data** text box.
+3. Paste the following script:
+
+```bash
+#!/bin/bash
+# Update package repositories
+apt-get update -y
+
+# Install Nginx
+apt-get install nginx -y
+
+# Start and enable the Nginx service
+systemctl start nginx
+systemctl enable nginx
+```
+
+4. Click **Launch instance**.
+
+---
+
+### Step 4: Verify the Web Server
+1. Wait a few minutes for the instance state to change to **Running** and for the status checks to pass.
+2. Click on your instance ID and copy the **Public IPv4 address** from the details tab.
+3. Open a web browser, paste the IP address into the address bar (ensure you use `http://` instead of `https://`), and press Enter.
+4. You should successfully see the default **"Welcome to nginx!"** landing page.
+
+---
+
+### Step 5: Customize Your Web Content (Optional)
+If you want to replace the default Nginx welcome page with your own HTML website code:
+
+1. Connect to your instance via **SSH** or **EC2 Instance Connect**.
+2. Change your directory to the default web root:
+   ```bash
+   cd /var/www/html
+   ```
+3. Backup the default welcome page and create a new index file:
+   ```bash
+   sudo mv index.nginx-debian.html index.nginx-debian.html.bak
+   sudo nano index.html
+   ```
+4. Paste or write your custom HTML code inside the file.
+5. Save the file (`Ctrl+O`, then `Enter`) and exit the text editor (`Ctrl+X`). Your website will now update instantly in the browser.
